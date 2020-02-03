@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    Let's Chat
+  </title>
+  <!-- ADD CSS HERE -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+  <style>
+    .list-group .list-group-item-action.hightlight-row {
+      background-color: #6c9656;
+    }
+    .like-message {
+      cursor: pointer;
+      float: right;
+      position: relative;
+      top: -80px;
+      font-size: xx-large;
+    }
+
+    .like-message:hover{
+      color: #000;
+    }
+
+    .like-message.m-liked, .like-message.m-liked:hover {
+      color:crimson;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container py-5 px-4">
+    <div class="col-md-12">
+      <div class="col-sm-9">
+          <h1 class="display-4 text-white">Let's Chat</h1>
+      </div>
+      <div class="col-sm-3">
+          <h5 class="display-4 text-white">Hello, <%= user.first_name %> <%= user.last_name %>.
+            <a href="/logout">
+              <i class="glyphicon glyphicon-log-out" aria-hidden="true"></i>
+            </a>
+          </h5>
+      </div>
+    </div>
+    <!-- Typing area -->
+    <form id="chatApp" action="javascript:void(0)" method="POST" class="form-horizontal" onsubmit="autoAppearMessage()">
+      <div class="form-group">
+        <div class="col-md-9">
+          <textarea name="messageText" placeholder="Type Your Message Here...." required aria-describedby="button-addon2"
+            class="form-control rounded-0 border-0 py-4 bg-light"></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:10px" class="form-group">
+        <!-- Button -->
+
+        <div class="col-sm-12 controls">
+          <button id="btn_submit" type="submit" class="btn btn-success">
+            Submit
+          </button>
+        </div>
+      </div>
+  </div>
+  </form>
+  <!-- Chat Box-->
+
+  <div class="col-md-12 px-0">
+    <div class="bg-white">
+
+      <div class="messages-box">
+        <% chat_messages.forEach(function(c_message, index){ %>
+        <div class="list-group rounded-0">
+          <a
+            class="list-group-item list-group-item-action active text-white rounded-0 <%= c_message['highlightMsg'] %>">
+            <div class="media">
+              <div class="media-body ml-4">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <h6 class="mb-0"><%= c_message['u_name'].toUpperCase() %></h6>
+                </div>
+                <p class="font-italic mb-0 text-small"><%= c_message['message'] %></p>
+                <small class="small font-weight-bold"><%= c_message['m_date']%></small>
+              </div>
+              <%
+              var likeClass = ""; 
+              if (c_message['count'] > 0) {
+                likeClass = "m-liked";
+              }
+              %>
+              <i class="glyphicon glyphicon glyphicon-heart like-message <%= likeClass %>" aria-hidden="true"
+                id="likeMessage"
+                  data-val="<%= c_message['message_id'] %>"
+                  onclick="sendLike(this)"></i>
+            </div>
+          </a>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+  <!-- ADD JS HERE -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="/js/custom.js" type="text/javascript"></script>
+</body>
+
+</html>
